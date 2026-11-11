@@ -1,0 +1,14 @@
+using DeliveryHub.Services;
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+builder.Services.AddSingleton<DeliveryService>();
+builder.Services.AddSingleton<BatchService>();
+builder.Services.AddProblemDetails();
+builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = 1_048_576);
+var app = builder.Build();
+app.UseExceptionHandler();
+app.UseStatusCodePages();
+app.MapControllers();
+app.MapGet("/health", () => Results.Ok(new {status="ok",service="Delivery Hub",tariffMode="educational"}));
+app.MapGet("/", () => Results.Ok(new {name="Delivery Hub", version="1.0", description="Учебный API. Тарифы демонстрационные, не являются предложением перевозчиков.", endpoints=new[]{"POST /api/delivery/calculate","GET /api/delivery/carriers?periodDays=30","POST /api/batch/optimize","GET /api/batch"}}));
+app.Run();
