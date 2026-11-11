@@ -1,0 +1,1397 @@
+{
+  "baseUrl": "https://delivery-hub-vpk-pluxxynx.mia0.amvera.tech",
+  "runner": "Postman Newman 6.2.3",
+  "statistics": {
+    "iterations": {
+      "total": 1,
+      "pending": 0,
+      "failed": 0
+    },
+    "items": {
+      "total": 24,
+      "pending": 0,
+      "failed": 0
+    },
+    "scripts": {
+      "total": 24,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequests": {
+      "total": 24,
+      "pending": 0,
+      "failed": 0
+    },
+    "requests": {
+      "total": 24,
+      "pending": 0,
+      "failed": 0
+    },
+    "tests": {
+      "total": 24,
+      "pending": 0,
+      "failed": 0
+    },
+    "assertions": {
+      "total": 59,
+      "pending": 0,
+      "failed": 0
+    },
+    "testScripts": {
+      "total": 24,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequestScripts": {
+      "total": 0,
+      "pending": 0,
+      "failed": 0
+    }
+  },
+  "timings": {
+    "responseAverage": 304.2916666666667,
+    "responseMin": 181,
+    "responseMax": 1425,
+    "responseSd": 265.2640946878328,
+    "dnsAverage": 0,
+    "dnsMin": 0,
+    "dnsMax": 0,
+    "dnsSd": 0,
+    "firstByteAverage": 0,
+    "firstByteMin": 0,
+    "firstByteMax": 0,
+    "firstByteSd": 0,
+    "started": 1794418472369,
+    "completed": 1794418481630
+  },
+  "results": [
+    {
+      "test": "T01 Health",
+      "method": "GET",
+      "path": "/health",
+      "request": null,
+      "status": 200,
+      "elapsedMs": 1425,
+      "response": {
+        "status": "ok",
+        "service": "Delivery Hub",
+        "tariffMode": "educational"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T02 Standard delivery",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "standard",
+        "declaredValue": 1000
+      },
+      "status": 200,
+      "elapsedMs": 307,
+      "response": {
+        "selected": {
+          "carrierName": "СДЭК",
+          "price": 425.0,
+          "days": 3,
+          "reliability": 0.97,
+          "score": 0.39194117647058824
+        },
+        "alternatives": [
+          {
+            "carrierName": "Boxberry",
+            "price": 355.0,
+            "days": 4,
+            "reliability": 0.95,
+            "score": 0.3611267605633803
+          },
+          {
+            "carrierName": "Почта России",
+            "price": 285.0,
+            "days": 6,
+            "reliability": 0.92,
+            "score": 0.3274035087719298
+          }
+        ],
+        "billableWeightKg": 2,
+        "priority": "standard",
+        "weights": {
+          "price": 0.4,
+          "days": 0.3,
+          "reliability": 0.3
+        },
+        "tariffMode": "educational",
+        "explanation": "Выбран СДЭК: максимальный балл wPrice/price + wDays/days + wReliability*reliability. Учтён объёмный вес. Тарифы учебные; расстояние между городами не рассчитывается."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T03 Express delivery",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "express",
+        "declaredValue": 1000
+      },
+      "status": 200,
+      "elapsedMs": 191,
+      "response": {
+        "selected": {
+          "carrierName": "СДЭК",
+          "price": 425.0,
+          "days": 3,
+          "reliability": 0.97,
+          "score": 0.36390196078431375
+        },
+        "alternatives": [
+          {
+            "carrierName": "Boxberry",
+            "price": 355.0,
+            "days": 4,
+            "reliability": 0.95,
+            "score": 0.29528169014084504
+          },
+          {
+            "carrierName": "Почта России",
+            "price": 285.0,
+            "days": 6,
+            "reliability": 0.92,
+            "score": 0.2256842105263158
+          }
+        ],
+        "billableWeightKg": 2,
+        "priority": "express",
+        "weights": {
+          "price": 0.1,
+          "days": 0.8,
+          "reliability": 0.1
+        },
+        "tariffMode": "educational",
+        "explanation": "Выбран СДЭК: максимальный балл wPrice/price + wDays/days + wReliability*reliability. Учтён объёмный вес. Тарифы учебные; расстояние между городами не рассчитывается."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T04 Economy delivery",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "economy",
+        "declaredValue": 1000
+      },
+      "status": 200,
+      "elapsedMs": 286,
+      "response": {
+        "selected": {
+          "carrierName": "СДЭК",
+          "price": 425.0,
+          "days": 3,
+          "reliability": 0.97,
+          "score": 0.1322156862745098
+        },
+        "alternatives": [
+          {
+            "carrierName": "Boxberry",
+            "price": 355.0,
+            "days": 4,
+            "reliability": 0.95,
+            "score": 0.12225352112676056
+          },
+          {
+            "carrierName": "Почта России",
+            "price": 285.0,
+            "days": 6,
+            "reliability": 0.92,
+            "score": 0.11147368421052632
+          }
+        ],
+        "billableWeightKg": 2,
+        "priority": "economy",
+        "weights": {
+          "price": 0.8,
+          "days": 0.1,
+          "reliability": 0.1
+        },
+        "tariffMode": "educational",
+        "explanation": "Выбран СДЭК: максимальный балл wPrice/price + wDays/days + wReliability*reliability. Учтён объёмный вес. Тарифы учебные; расстояние между городами не рассчитывается."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T05 Volumetric weight",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 100,
+        "widthCm": 50,
+        "heightCm": 50,
+        "priority": "standard",
+        "declaredValue": 1000
+      },
+      "status": 200,
+      "elapsedMs": 320,
+      "response": {
+        "selected": {
+          "carrierName": "СДЭК",
+          "price": 3305.0,
+          "days": 3,
+          "reliability": 0.97,
+          "score": 0.3911210287443268
+        },
+        "alternatives": [
+          {
+            "carrierName": "Boxberry",
+            "price": 2755.0,
+            "days": 4,
+            "reliability": 0.95,
+            "score": 0.3601451905626134
+          },
+          {
+            "carrierName": "Почта России",
+            "price": 2205.0,
+            "days": 6,
+            "reliability": 0.92,
+            "score": 0.3261814058956916
+          }
+        ],
+        "billableWeightKg": 50,
+        "priority": "standard",
+        "weights": {
+          "price": 0.4,
+          "days": 0.3,
+          "reliability": 0.3
+        },
+        "tariffMode": "educational",
+        "explanation": "Выбран СДЭК: максимальный балл wPrice/price + wDays/days + wReliability*reliability. Учтён объёмный вес. Тарифы учебные; расстояние между городами не рассчитывается."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T06 Invalid weight",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": -1,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "standard",
+        "declaredValue": 1000
+      },
+      "status": 400,
+      "elapsedMs": 196,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "errors": {
+          "WeightKg": [
+            "The field WeightKg must be between 0.001 and 1000."
+          ]
+        },
+        "traceId": "00-2badc971d6e893b6a435f4d8c14183b3-272f3f2da2cac4e1-00"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T07 Invalid priority",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "fast",
+        "declaredValue": 1000
+      },
+      "status": 400,
+      "elapsedMs": 214,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "errors": {
+          "Priority": [
+            "The field Priority must match the regular expression '^(standard|express|economy)$'."
+          ]
+        },
+        "traceId": "00-14dca2c77b89f14d516003f666463044-7dc60b6606bac54d-00"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T08 Missing address",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": null,
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "standard",
+        "declaredValue": 1000
+      },
+      "status": 400,
+      "elapsedMs": 184,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "errors": {
+          "Sender": [
+            "The Sender field is required."
+          ]
+        },
+        "traceId": "00-032b82146f751a0b6e703c6c5c2c0f04-c2a5c6bba8728c3c-00"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T09 Carrier statistics",
+      "method": "GET",
+      "path": "/api/delivery/carriers",
+      "request": null,
+      "status": 200,
+      "elapsedMs": 205,
+      "response": {
+        "periodDays": 30,
+        "city": null,
+        "dataSource": "educational-fixtures",
+        "carriers": [
+          {
+            "carrierName": "СДЭК",
+            "ordersCount": 30,
+            "avgPrice": 480,
+            "onTimeRate": 0.9,
+            "damageRate": 0.0667
+          },
+          {
+            "carrierName": "Boxberry",
+            "ordersCount": 30,
+            "avgPrice": 400,
+            "onTimeRate": 0.9,
+            "damageRate": 0.0333
+          },
+          {
+            "carrierName": "Почта России",
+            "ordersCount": 30,
+            "avgPrice": 320,
+            "onTimeRate": 0.9,
+            "damageRate": 0.0333
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T10 Unknown city",
+      "method": "GET",
+      "path": "/api/delivery/carriers",
+      "request": null,
+      "status": 200,
+      "elapsedMs": 186,
+      "response": {
+        "periodDays": 30,
+        "city": "Unknown",
+        "dataSource": "educational-fixtures",
+        "carriers": [
+          {
+            "carrierName": "СДЭК",
+            "ordersCount": 0,
+            "avgPrice": 0,
+            "onTimeRate": null,
+            "damageRate": null
+          },
+          {
+            "carrierName": "Boxberry",
+            "ordersCount": 0,
+            "avgPrice": 0,
+            "onTimeRate": null,
+            "damageRate": null
+          },
+          {
+            "carrierName": "Почта России",
+            "ordersCount": 0,
+            "avgPrice": 0,
+            "onTimeRate": null,
+            "damageRate": null
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T11 Invalid period",
+      "method": "GET",
+      "path": "/api/delivery/carriers",
+      "request": null,
+      "status": 400,
+      "elapsedMs": 499,
+      "response": {
+        "error": "periodDays должен быть от 1 до 90: учебная история содержит 90 дней."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T12 Batch boundary and cities",
+      "method": "POST",
+      "path": "/api/batch/optimize",
+      "request": {
+        "orders": [
+          {
+            "id": "A",
+            "destinationCity": "Казань",
+            "weightKg": 2,
+            "readyAt": "2026-11-11T08:00:00+03:00"
+          },
+          {
+            "id": "B",
+            "destinationCity": "Казань",
+            "weightKg": 3,
+            "readyAt": "2026-11-11T16:00:00+03:00"
+          },
+          {
+            "id": "C",
+            "destinationCity": "Казань",
+            "weightKg": 1,
+            "readyAt": "2026-11-11T17:00:00+03:00"
+          },
+          {
+            "id": "D",
+            "destinationCity": "Москва",
+            "weightKg": 1,
+            "readyAt": "2026-11-11T09:00:00+03:00"
+          }
+        ],
+        "maxWaitHours": 8
+      },
+      "status": 200,
+      "elapsedMs": 596,
+      "response": {
+        "batches": [
+          {
+            "batchId": "88fb59cc-0453-4ea5-8f4e-eb3b09df82a7",
+            "destinationCity": "Казань",
+            "shipmentIds": [
+              "A",
+              "B"
+            ],
+            "totalWeightKg": 5,
+            "dispatchAt": "2026-11-11T16:00:00+03:00",
+            "originalCost": 600,
+            "batchCost": 400,
+            "savedAmount": 200,
+            "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+            "createdAt": "2026-11-11T17:34:38.0079174+00:00"
+          },
+          {
+            "batchId": "fdd76a9a-30db-419c-a838-58b103fdac2c",
+            "destinationCity": "Казань",
+            "shipmentIds": [
+              "C"
+            ],
+            "totalWeightKg": 1,
+            "dispatchAt": "2026-11-11T17:00:00+03:00",
+            "originalCost": 240,
+            "batchCost": 240,
+            "savedAmount": 0,
+            "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+            "createdAt": "2026-11-11T17:34:38.0079269+00:00"
+          },
+          {
+            "batchId": "dbcdd465-1d75-4ee9-8cd3-846c9c7bf9e7",
+            "destinationCity": "Москва",
+            "shipmentIds": [
+              "D"
+            ],
+            "totalWeightKg": 1,
+            "dispatchAt": "2026-11-11T09:00:00+03:00",
+            "originalCost": 240,
+            "batchCost": 240,
+            "savedAmount": 0,
+            "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+            "createdAt": "2026-11-11T17:34:38.0079364+00:00"
+          }
+        ],
+        "totalSavings": 200,
+        "tariffMode": "educational"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T13 Read saved batches",
+      "method": "GET",
+      "path": "/api/batch",
+      "request": null,
+      "status": 200,
+      "elapsedMs": 188,
+      "response": [
+        {
+          "batchId": "d248de5e-2675-4036-a4eb-e92d76ca7eb7",
+          "destinationCity": "Казань",
+          "shipmentIds": [
+            "A",
+            "B"
+          ],
+          "totalWeightKg": 5,
+          "dispatchAt": "2026-11-11T16:00:00+03:00",
+          "originalCost": 600,
+          "batchCost": 400,
+          "savedAmount": 200,
+          "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:03.504143+00:00"
+        },
+        {
+          "batchId": "953cfed4-8506-4cc7-abc1-178075d6335f",
+          "destinationCity": "Казань",
+          "shipmentIds": [
+            "C"
+          ],
+          "totalWeightKg": 1,
+          "dispatchAt": "2026-11-11T17:00:00+03:00",
+          "originalCost": 240,
+          "batchCost": 240,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:03.5043069+00:00"
+        },
+        {
+          "batchId": "69549a52-8db4-4a1a-964f-41cf7142cc54",
+          "destinationCity": "Москва",
+          "shipmentIds": [
+            "D"
+          ],
+          "totalWeightKg": 1,
+          "dispatchAt": "2026-11-11T09:00:00+03:00",
+          "originalCost": 240,
+          "batchCost": 240,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:03.5043757+00:00"
+        },
+        {
+          "batchId": "c16d744b-e99d-415f-a07b-717a57658984",
+          "destinationCity": "Казань",
+          "shipmentIds": [
+            "A"
+          ],
+          "totalWeightKg": 2,
+          "dispatchAt": "2026-11-11T08:00:00+03:00",
+          "originalCost": 280,
+          "batchCost": 280,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:06.7334041+00:00"
+        },
+        {
+          "batchId": "289bde9a-29d2-4f4b-8985-c2ede9bd92ae",
+          "destinationCity": "Казань",
+          "shipmentIds": [
+            "B"
+          ],
+          "totalWeightKg": 3,
+          "dispatchAt": "2026-11-11T16:00:00+03:00",
+          "originalCost": 320,
+          "batchCost": 320,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:06.7334089+00:00"
+        },
+        {
+          "batchId": "ce286a10-f646-4f8c-af97-2a4af1cdcad3",
+          "destinationCity": "Казань",
+          "shipmentIds": [
+            "C"
+          ],
+          "totalWeightKg": 1,
+          "dispatchAt": "2026-11-11T17:00:00+03:00",
+          "originalCost": 240,
+          "batchCost": 240,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:06.7334122+00:00"
+        },
+        {
+          "batchId": "f0c43320-ccd8-4993-b9ab-6415c33ed99e",
+          "destinationCity": "Москва",
+          "shipmentIds": [
+            "D"
+          ],
+          "totalWeightKg": 1,
+          "dispatchAt": "2026-11-11T09:00:00+03:00",
+          "originalCost": 240,
+          "batchCost": 240,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:06.733418+00:00"
+        },
+        {
+          "batchId": "88fb59cc-0453-4ea5-8f4e-eb3b09df82a7",
+          "destinationCity": "Казань",
+          "shipmentIds": [
+            "A",
+            "B"
+          ],
+          "totalWeightKg": 5,
+          "dispatchAt": "2026-11-11T16:00:00+03:00",
+          "originalCost": 600,
+          "batchCost": 400,
+          "savedAmount": 200,
+          "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:38.0079174+00:00"
+        },
+        {
+          "batchId": "fdd76a9a-30db-419c-a838-58b103fdac2c",
+          "destinationCity": "Казань",
+          "shipmentIds": [
+            "C"
+          ],
+          "totalWeightKg": 1,
+          "dispatchAt": "2026-11-11T17:00:00+03:00",
+          "originalCost": 240,
+          "batchCost": 240,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:38.0079269+00:00"
+        },
+        {
+          "batchId": "dbcdd465-1d75-4ee9-8cd3-846c9c7bf9e7",
+          "destinationCity": "Москва",
+          "shipmentIds": [
+            "D"
+          ],
+          "totalWeightKg": 1,
+          "dispatchAt": "2026-11-11T09:00:00+03:00",
+          "originalCost": 240,
+          "batchCost": 240,
+          "savedAmount": 0,
+          "explanation": "Один город; разница готовности не более 8 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+          "createdAt": "2026-11-11T17:34:38.0079364+00:00"
+        }
+      ],
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T14 Empty orders",
+      "method": "POST",
+      "path": "/api/batch/optimize",
+      "request": {
+        "orders": [],
+        "maxWaitHours": 8
+      },
+      "status": 400,
+      "elapsedMs": 183,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "errors": {
+          "Orders": [
+            "The field Orders must be a string or array type with a minimum length of '1'."
+          ]
+        },
+        "traceId": "00-a7f728e810621b444a3a0827af39ed33-225a7b181fe118f4-00"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T15 Duplicate IDs",
+      "method": "POST",
+      "path": "/api/batch/optimize",
+      "request": {
+        "orders": [
+          {
+            "id": "A",
+            "destinationCity": "Казань",
+            "weightKg": 2,
+            "readyAt": "2026-11-11T08:00:00+03:00"
+          },
+          {
+            "id": "A",
+            "destinationCity": "Казань",
+            "weightKg": 2,
+            "readyAt": "2026-11-11T08:00:00+03:00"
+          }
+        ],
+        "maxWaitHours": 8
+      },
+      "status": 400,
+      "elapsedMs": 230,
+      "response": {
+        "error": "Идентификаторы заказов должны быть уникальны."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T16 Invalid wait",
+      "method": "POST",
+      "path": "/api/batch/optimize",
+      "request": {
+        "orders": [
+          {
+            "id": "A",
+            "destinationCity": "Казань",
+            "weightKg": 2,
+            "readyAt": "2026-11-11T08:00:00+03:00"
+          },
+          {
+            "id": "B",
+            "destinationCity": "Казань",
+            "weightKg": 3,
+            "readyAt": "2026-11-11T16:00:00+03:00"
+          },
+          {
+            "id": "C",
+            "destinationCity": "Казань",
+            "weightKg": 1,
+            "readyAt": "2026-11-11T17:00:00+03:00"
+          },
+          {
+            "id": "D",
+            "destinationCity": "Москва",
+            "weightKg": 1,
+            "readyAt": "2026-11-11T09:00:00+03:00"
+          }
+        ],
+        "maxWaitHours": -1
+      },
+      "status": 400,
+      "elapsedMs": 188,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "errors": {
+          "MaxWaitHours": [
+            "The field MaxWaitHours must be between 0 and 168."
+          ]
+        },
+        "traceId": "00-b517f05e6b3991a9d629d066ec8ec496-6e1a3cc41b2db57d-00"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T17 Missing readiness",
+      "method": "POST",
+      "path": "/api/batch/optimize",
+      "request": {
+        "orders": [
+          {
+            "id": "A",
+            "destinationCity": "Казань",
+            "weightKg": 2
+          }
+        ],
+        "maxWaitHours": 8
+      },
+      "status": 400,
+      "elapsedMs": 181,
+      "response": {
+        "error": "Для каждого заказа требуется readyAt с годом от 2000 до 2100."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T18 Unknown endpoint",
+      "method": "GET",
+      "path": "/api/missing",
+      "request": null,
+      "status": 404,
+      "elapsedMs": 607,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.5",
+        "title": "Not Found",
+        "status": 404
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 404",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T19 Wrong method",
+      "method": "PUT",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "standard",
+        "declaredValue": 1000
+      },
+      "status": 405,
+      "elapsedMs": 185,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.6",
+        "title": "Method Not Allowed",
+        "status": 405
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 405",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T20 Null order",
+      "method": "POST",
+      "path": "/api/batch/optimize",
+      "request": {
+        "orders": [
+          null
+        ],
+        "maxWaitHours": 8
+      },
+      "status": 400,
+      "elapsedMs": 182,
+      "response": {
+        "error": "Для каждого заказа требуется readyAt с годом от 2000 до 2100."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T21 Malformed JSON",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": "{broken",
+      "status": 400,
+      "elapsedMs": 181,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "errors": {
+          "$": [
+            "'b' is an invalid start of a property name. Expected a '\"'. Path: $ | LineNumber: 0 | BytePositionInLine: 1."
+          ],
+          "request": [
+            "The request field is required."
+          ]
+        },
+        "traceId": "00-a54d416a4027b1cdb1508479c8fca554-5d1fbfc3a1f8248c-00"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T22 Same city",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "receiver": {
+          "city": "Москва",
+          "postalCode": "101000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "standard",
+        "declaredValue": 1000
+      },
+      "status": 200,
+      "elapsedMs": 183,
+      "response": {
+        "selected": {
+          "carrierName": "СДЭК",
+          "price": 341.0,
+          "days": 2,
+          "reliability": 0.97,
+          "score": 0.44217302052785923
+        },
+        "alternatives": [
+          {
+            "carrierName": "Boxberry",
+            "price": 285.0,
+            "days": 3,
+            "reliability": 0.95,
+            "score": 0.3864035087719298
+          },
+          {
+            "carrierName": "Почта России",
+            "price": 229.0,
+            "days": 5,
+            "reliability": 0.92,
+            "score": 0.3377467248908297
+          }
+        ],
+        "billableWeightKg": 2,
+        "priority": "standard",
+        "weights": {
+          "price": 0.4,
+          "days": 0.3,
+          "reliability": 0.3
+        },
+        "tariffMode": "educational",
+        "explanation": "Выбран СДЭК: максимальный балл wPrice/price + wDays/days + wReliability*reliability. Учтён объёмный вес. Тарифы учебные; расстояние между городами не рассчитывается."
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T23 Separate dispatches",
+      "method": "POST",
+      "path": "/api/batch/optimize",
+      "request": {
+        "orders": [
+          {
+            "id": "A",
+            "destinationCity": "Казань",
+            "weightKg": 2,
+            "readyAt": "2026-11-11T08:00:00+03:00"
+          },
+          {
+            "id": "B",
+            "destinationCity": "Казань",
+            "weightKg": 3,
+            "readyAt": "2026-11-11T16:00:00+03:00"
+          },
+          {
+            "id": "C",
+            "destinationCity": "Казань",
+            "weightKg": 1,
+            "readyAt": "2026-11-11T17:00:00+03:00"
+          },
+          {
+            "id": "D",
+            "destinationCity": "Москва",
+            "weightKg": 1,
+            "readyAt": "2026-11-11T09:00:00+03:00"
+          }
+        ],
+        "maxWaitHours": 0
+      },
+      "status": 200,
+      "elapsedMs": 202,
+      "response": {
+        "batches": [
+          {
+            "batchId": "998c0a3b-034d-4ea5-9f15-0597115dc9c8",
+            "destinationCity": "Казань",
+            "shipmentIds": [
+              "A"
+            ],
+            "totalWeightKg": 2,
+            "dispatchAt": "2026-11-11T08:00:00+03:00",
+            "originalCost": 280,
+            "batchCost": 280,
+            "savedAmount": 0,
+            "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+            "createdAt": "2026-11-11T17:34:41.5321338+00:00"
+          },
+          {
+            "batchId": "670fc3e5-e839-42e4-9dfe-4bf50e333172",
+            "destinationCity": "Казань",
+            "shipmentIds": [
+              "B"
+            ],
+            "totalWeightKg": 3,
+            "dispatchAt": "2026-11-11T16:00:00+03:00",
+            "originalCost": 320,
+            "batchCost": 320,
+            "savedAmount": 0,
+            "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+            "createdAt": "2026-11-11T17:34:41.5321382+00:00"
+          },
+          {
+            "batchId": "c89d8ac1-83cd-4850-8130-2f89fa65d8e3",
+            "destinationCity": "Казань",
+            "shipmentIds": [
+              "C"
+            ],
+            "totalWeightKg": 1,
+            "dispatchAt": "2026-11-11T17:00:00+03:00",
+            "originalCost": 240,
+            "batchCost": 240,
+            "savedAmount": 0,
+            "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+            "createdAt": "2026-11-11T17:34:41.5321445+00:00"
+          },
+          {
+            "batchId": "4d59538c-28a5-4c47-aeb1-16a979067a29",
+            "destinationCity": "Москва",
+            "shipmentIds": [
+              "D"
+            ],
+            "totalWeightKg": 1,
+            "dispatchAt": "2026-11-11T09:00:00+03:00",
+            "originalCost": 240,
+            "batchCost": 240,
+            "savedAmount": 0,
+            "explanation": "Один город; разница готовности не более 0 ч. Учебная модель 200 руб. за отправку + 40 руб./кг.",
+            "createdAt": "2026-11-11T17:34:41.5321554+00:00"
+          }
+        ],
+        "totalSavings": 0,
+        "tariffMode": "educational"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 200",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        },
+        {
+          "assertion": "Business result",
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "test": "T24 Invalid postal code",
+      "method": "POST",
+      "path": "/api/delivery/calculate",
+      "request": {
+        "sender": {
+          "city": "Москва",
+          "postalCode": "abc"
+        },
+        "receiver": {
+          "city": "Казань",
+          "postalCode": "420000"
+        },
+        "weightKg": 2,
+        "lengthCm": 20,
+        "widthCm": 15,
+        "heightCm": 10,
+        "priority": "standard",
+        "declaredValue": 1000
+      },
+      "status": 400,
+      "elapsedMs": 184,
+      "response": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+        "title": "One or more validation errors occurred.",
+        "status": 400,
+        "errors": {
+          "Sender.PostalCode": [
+            "The field PostalCode must match the regular expression '^\\d{6}$'."
+          ]
+        },
+        "traceId": "00-ef49e74369ec85cd4cca7ba2f1a8b15b-26481aca133b9eb2-00"
+      },
+      "assertions": [
+        {
+          "assertion": "HTTP 400",
+          "skipped": false
+        },
+        {
+          "assertion": "Response under 2000 ms",
+          "skipped": false
+        }
+      ]
+    }
+  ]
+}
