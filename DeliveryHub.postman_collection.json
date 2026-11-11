@@ -1,0 +1,788 @@
+{
+  "info": {
+    "name": "Delivery Hub ВПК 3–4",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5081",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "T01 Health",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.status).to.eql(\"ok\");});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T02 Standard delivery",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"standard\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.selected.carrierName).to.eql(\"СДЭК\"); pm.expect(j.selected.price).to.eql(425); pm.expect(j.selected.days).to.eql(3); pm.expect(j.alternatives.length).to.eql(2); pm.expect(j.weights.price).to.eql(0.4);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T03 Express delivery",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"express\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.selected.carrierName).to.eql(\"СДЭК\");});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T04 Economy delivery",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"economy\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.priority).to.eql(\"economy\");});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T05 Volumetric weight",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 100, \"widthCm\": 50, \"heightCm\": 50, \"priority\": \"standard\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.billableWeightKg).to.eql(50); pm.expect(j.selected.price).to.eql(3305);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T06 Invalid weight",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": -1, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"standard\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T07 Invalid priority",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"fast\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T08 Missing address",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": null, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"standard\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T09 Carrier statistics",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/carriers?periodDays=30"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.carriers.length).to.eql(3); pm.expect(j.carriers[0].ordersCount).to.eql(30); pm.expect(j.dataSource).to.eql(\"educational-fixtures\");});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T10 Unknown city",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/carriers?periodDays=30&city=Unknown"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.carriers[0].ordersCount).to.eql(0); pm.expect(j.carriers[0].onTimeRate).to.eql(null);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T11 Invalid period",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/carriers?periodDays=0"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T12 Batch boundary and cities",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch/optimize",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"orders\": [{\"id\": \"A\", \"destinationCity\": \"Казань\", \"weightKg\": 2, \"readyAt\": \"2026-11-11T08:00:00+03:00\"}, {\"id\": \"B\", \"destinationCity\": \"Казань\", \"weightKg\": 3, \"readyAt\": \"2026-11-11T16:00:00+03:00\"}, {\"id\": \"C\", \"destinationCity\": \"Казань\", \"weightKg\": 1, \"readyAt\": \"2026-11-11T17:00:00+03:00\"}, {\"id\": \"D\", \"destinationCity\": \"Москва\", \"weightKg\": 1, \"readyAt\": \"2026-11-11T09:00:00+03:00\"}], \"maxWaitHours\": 8}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.batches.length).to.eql(3); pm.expect(j.totalSavings).to.eql(200); pm.expect(j.batches[0].shipmentIds).to.eql([\"A\",\"B\"]); pm.expect(j.batches[0].batchCost).to.eql(400);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T13 Read saved batches",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.some(x=>x.shipmentIds.includes(\"A\") && x.shipmentIds.includes(\"B\"))).to.eql(true);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T14 Empty orders",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch/optimize",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"orders\": [], \"maxWaitHours\": 8}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T15 Duplicate IDs",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch/optimize",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"orders\": [{\"id\": \"A\", \"destinationCity\": \"Казань\", \"weightKg\": 2, \"readyAt\": \"2026-11-11T08:00:00+03:00\"}, {\"id\": \"A\", \"destinationCity\": \"Казань\", \"weightKg\": 2, \"readyAt\": \"2026-11-11T08:00:00+03:00\"}], \"maxWaitHours\": 8}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T16 Invalid wait",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch/optimize",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"orders\": [{\"id\": \"A\", \"destinationCity\": \"Казань\", \"weightKg\": 2, \"readyAt\": \"2026-11-11T08:00:00+03:00\"}, {\"id\": \"B\", \"destinationCity\": \"Казань\", \"weightKg\": 3, \"readyAt\": \"2026-11-11T16:00:00+03:00\"}, {\"id\": \"C\", \"destinationCity\": \"Казань\", \"weightKg\": 1, \"readyAt\": \"2026-11-11T17:00:00+03:00\"}, {\"id\": \"D\", \"destinationCity\": \"Москва\", \"weightKg\": 1, \"readyAt\": \"2026-11-11T09:00:00+03:00\"}], \"maxWaitHours\": -1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T17 Missing readiness",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch/optimize",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"orders\": [{\"id\": \"A\", \"destinationCity\": \"Казань\", \"weightKg\": 2}], \"maxWaitHours\": 8}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T18 Unknown endpoint",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/missing"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\",()=>pm.response.to.have.status(404));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T19 Wrong method",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"standard\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 405\",()=>pm.response.to.have.status(405));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T20 Null order",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch/optimize",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"orders\": [null], \"maxWaitHours\": 8}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T21 Malformed JSON",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{broken",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T22 Same city",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"receiver\": {\"city\": \"Москва\", \"postalCode\": \"101000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"standard\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.selected.price).to.eql(341); pm.expect(j.selected.days).to.eql(2);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T23 Separate dispatches",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/batch/optimize",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"orders\": [{\"id\": \"A\", \"destinationCity\": \"Казань\", \"weightKg\": 2, \"readyAt\": \"2026-11-11T08:00:00+03:00\"}, {\"id\": \"B\", \"destinationCity\": \"Казань\", \"weightKg\": 3, \"readyAt\": \"2026-11-11T16:00:00+03:00\"}, {\"id\": \"C\", \"destinationCity\": \"Казань\", \"weightKg\": 1, \"readyAt\": \"2026-11-11T17:00:00+03:00\"}, {\"id\": \"D\", \"destinationCity\": \"Москва\", \"weightKg\": 1, \"readyAt\": \"2026-11-11T09:00:00+03:00\"}], \"maxWaitHours\": 0}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));",
+              "pm.test(\"Business result\",()=>{const j=pm.response.json(); pm.expect(j.batches.length).to.eql(4); pm.expect(j.totalSavings).to.eql(0);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "T24 Invalid postal code",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/delivery/calculate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"sender\": {\"city\": \"Москва\", \"postalCode\": \"abc\"}, \"receiver\": {\"city\": \"Казань\", \"postalCode\": \"420000\"}, \"weightKg\": 2, \"lengthCm\": 20, \"widthCm\": 15, \"heightCm\": 10, \"priority\": \"standard\", \"declaredValue\": 1000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "pm.test(\"Response under 2000 ms\",()=>pm.expect(pm.response.responseTime).to.be.below(2000));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
